@@ -1,13 +1,12 @@
 package org.example.libraryapplication.service;
 
-import org.example.libraryapplication.entity.BookEntity;
+import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.exceptions.BookNotFoundException;
 import org.example.libraryapplication.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -18,11 +17,11 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<BookEntity> getAllBooks() {
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public BookEntity createBook(BookEntity book) {
+    public Book createBook(Book book) {
         if (book.getName() == null || book.getName().isBlank()) {
             throw new IllegalArgumentException("Book name cannot be null or empty");
         }
@@ -32,7 +31,7 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public BookEntity findById(Long id) {
+    public Book findById(Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found"));
     }

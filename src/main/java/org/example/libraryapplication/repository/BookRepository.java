@@ -1,6 +1,6 @@
 package org.example.libraryapplication.repository;
 
-import org.example.libraryapplication.entity.BookEntity;
+import org.example.libraryapplication.entity.Book;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,21 +10,21 @@ import java.util.Optional;
 @Repository
 public class BookRepository {
 
-    private List<BookEntity> books = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
     private Long id = 1L;
 
-    public List<BookEntity> findAll() {
+    public List<Book> findAll() {
         return books;
     }
 
-    public BookEntity save(BookEntity book) {
+    public Book save(Book book) {
         book.setId(id);
         id++;
         books.add(book);
         return book;
     }
 
-    public Optional<BookEntity> findById(Long id) {
+    public Optional<Book> findById(Long id) {
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst();

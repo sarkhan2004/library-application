@@ -2,7 +2,7 @@ package org.example.libraryapplication.controller;
 
 import lombok.Data;
 import org.example.libraryapplication.dto.user.ResponseBody;
-import org.example.libraryapplication.entity.UserEntity;
+import org.example.libraryapplication.entity.User;
 import org.example.libraryapplication.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping
     public ResponseBody createUser(@RequestBody RequestBody requestBody) {
-        UserEntity user = new UserEntity();
+        User user = new User();
 
         return null;
     }
