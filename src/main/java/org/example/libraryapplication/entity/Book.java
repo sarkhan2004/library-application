@@ -20,8 +20,10 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private BookCategory category;
 
-    private String name;
+    @Column(nullable = false)
     private Long views = 0L;
+
+    private String name;
     private Double rating = 0.0;
     private String description;
     private BigDecimal price;

@@ -1,30 +1,44 @@
 package org.example.libraryapplication.controller;
 
-import lombok.Data;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.libraryapplication.dto.user.ResponseBody;
-import org.example.libraryapplication.entity.User;
-import org.example.libraryapplication.repository.UserRepository;
+import org.example.libraryapplication.dto.user.UserResponseDto;
+import org.example.libraryapplication.dto.user.UserRequestDto;
 import org.example.libraryapplication.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
-@Data
-
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping
-    public ResponseBody createUser(@RequestBody User requestBody) {
-        userService.createUser(requestBody);
-        return null;
+    public UserResponseDto createUser(@Valid @RequestBody UserRequestDto requestBody) {
+        return userService.createUser(requestBody);
     }
 
-    @GetMapping("{id}")
-    public ResponseBody getUser(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public UserResponseDto getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @GetMapping
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PutMapping("/{id}")
+    public UserResponseDto updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDto requestBody) {
+        return userService.updateUser(id, requestBody);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
 }

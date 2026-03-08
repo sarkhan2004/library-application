@@ -1,15 +1,15 @@
 package org.example.libraryapplication.mapper;
 
-import org.example.libraryapplication.dto.book.RequestBody;
-import org.example.libraryapplication.dto.book.ResponseBody;
+import org.example.libraryapplication.dto.book.BookRequestDto;
+import org.example.libraryapplication.dto.book.BookResponseDto;
 import org.example.libraryapplication.entity.Book;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BookMapper {
 
-    public ResponseBody toDto(Book book) {
-        ResponseBody response = new ResponseBody();
+    public BookResponseDto toDto(Book book) {
+        BookResponseDto response = new BookResponseDto();
         response.setName(book.getName());
         response.setBookCategory(book.getCategory());
         response.setPrice(book.getPrice());
@@ -18,13 +18,13 @@ public class BookMapper {
         return response;
     }
 
-    public Book toEntity(RequestBody request) {
+    public Book toEntity(BookRequestDto request) {
         Book book = new Book();
 
         book.setName(request.getName());
         book.setCategory(request.getBookCategory());
         book.setPrice(request.getPrice());
-        book.setCategory(request.getBookCategory());
+        book.setDescription(request.getDescription());
 
         return book;
     }

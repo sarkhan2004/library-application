@@ -1,15 +1,14 @@
 package org.example.libraryapplication.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.libraryapplication.dto.book.RequestBody;
-import org.example.libraryapplication.dto.book.ResponseBody;
+import org.example.libraryapplication.dto.book.BookRequestDto;
+import org.example.libraryapplication.dto.book.BookResponseDto;
 import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.exceptions.BookNotFoundException;
 import org.example.libraryapplication.mapper.BookMapper;
 import org.example.libraryapplication.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class BookService {
 
     private final BookMapper bookMapper;
 
-    public ResponseBody createBook(RequestBody request) {
+    public BookResponseDto createBook(BookRequestDto request) {
 
         Book book = bookMapper.toEntity(request);
 
@@ -32,11 +31,38 @@ public class BookService {
         return bookMapper.toDto(savedBook);
     }
 
-    public ResponseBody findById(Long id) {
-        Book foundedBook = bookRepository.findById(id).get();
+    public BookResponseDto findById(Long id) {
+        Book foundedBook = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
 
         return bookMapper.toDto(foundedBook);
     }
 
+    public List<BookResponseDto> findAll() {
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toDto)
+                .toList();
+    }
+
+    public BookResponseDto updateBook(Long id, BookRequestDto request) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
+
+        book.setName(request.getName());
+        book.setCategory(request.getBookCategory());
+        book.setDescription(request.getDescription());
+        book.setPrice(request.getPrice());
+
+        Book updatedBook = bookRepository.save(book);
+
+        return bookMapper.toDto(updatedBook);
+    }
+
+    public void deleteBook(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException("Book with id " + id + " not found");
+        }
+        bookRepository.deleteById(id);
+    }
 
 }

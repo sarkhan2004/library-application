@@ -1,10 +1,11 @@
 package org.example.libraryapplication.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.libraryapplication.entity.Book;
+import org.example.libraryapplication.dto.book.BookRequestDto;
+import org.example.libraryapplication.dto.book.BookResponseDto;
 import org.example.libraryapplication.service.BookService;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -16,14 +17,30 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public org.example.libraryapplication.dto.book.ResponseBody createBook(@RequestBody org.example.libraryapplication.dto.book.RequestBody book) {
+    public BookResponseDto createBook(@Valid @RequestBody BookRequestDto book) {
         return bookService.createBook(book);
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
+    public BookResponseDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
+    @GetMapping
+    public List<BookResponseDto> getAllBooks() {
+        return bookService.findAll();
+    }
+
+    @PutMapping("/{id}")
+    public BookResponseDto updateBook(
+            @PathVariable Long id,
+            @Valid @RequestBody BookRequestDto book) {
+        return bookService.updateBook(id, book);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+    }
 
 }
