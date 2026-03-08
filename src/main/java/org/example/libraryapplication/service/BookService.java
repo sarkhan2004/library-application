@@ -1,39 +1,41 @@
 package org.example.libraryapplication.service;
 
+import lombok.RequiredArgsConstructor;
+import org.example.libraryapplication.dto.book.RequestBody;
+import org.example.libraryapplication.dto.book.ResponseBody;
 import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.exceptions.BookNotFoundException;
+import org.example.libraryapplication.mapper.BookMapper;
 import org.example.libraryapplication.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    private final BookMapper bookMapper;
+
+    public ResponseBody createBook(RequestBody request) {
+
+        Book book = bookMapper.toEntity(request);
+
+        book.setCreatingDate(LocalDateTime.now());
+
+        Book savedBook = bookRepository.save(book);
+
+        return bookMapper.toDto(savedBook);
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
+    public ResponseBody findById(Long id) {
+        Book foundedBook = bookRepository.findById(id).get();
 
-    public Book createBook(Book book) {
-        if (book.getName() == null || book.getName().isBlank()) {
-            throw new IllegalArgumentException("Book name cannot be null or empty");
-        }
-        if (book.getPrice() == null || book.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Book price cannot be null or less than or equal to zero");
-        }
-        return bookRepository.save(book);
-    }
-
-    public Book findById(Long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book not found"));
+        return bookMapper.toDto(foundedBook);
     }
 
 

@@ -1,29 +1,22 @@
 package org.example.libraryapplication.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.service.BookService;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
-
-
-    @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
-    }
-
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
+    public org.example.libraryapplication.dto.book.ResponseBody createBook(@RequestBody org.example.libraryapplication.dto.book.RequestBody book) {
         return bookService.createBook(book);
     }
 

@@ -1,16 +1,54 @@
 package org.example.libraryapplication.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.example.libraryapplication.enums.Role;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 @Data
 public class User {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String surname;
-    private Date birthday;
+    private String password;
+    private LocalDate birthday;
+    private BigDecimal balance;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_books",
+            joinColumns =  @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Email
+    @NotBlank
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String phoneNumber;
+
+
+
+
 
 }
