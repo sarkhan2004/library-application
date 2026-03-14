@@ -23,7 +23,7 @@ public class BookMapper {
 
         book.setName(request.getName());
         book.setCategory(request.getBookCategory());
-        ok.setPrice(request.getPrice());
+        book.setPrice(request.getPrice());
         book.setDescription(request.getDescription());
 
         return book;
