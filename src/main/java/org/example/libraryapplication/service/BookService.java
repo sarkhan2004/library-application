@@ -22,7 +22,6 @@ import java.util.Set;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final AuthorService authorService;
     private final AuthorRepository authorRepository;
 
     private final BookMapper bookMapper;
@@ -46,7 +45,7 @@ public class BookService {
         Book foundedBook = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
 
-        foundedBook.setViews(foundedBook.getViews());
+        foundedBook.setViews(foundedBook.getViews()+1);
 
         return bookMapper.toDto(foundedBook);
     }

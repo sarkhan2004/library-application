@@ -20,6 +20,7 @@ public class BookMapper {
 
     public BookResponseDto toDto(Book book) {
         BookResponseDto response = new BookResponseDto();
+        response.setId(book.getId());
         response.setName(book.getName());
         response.setBookCategory(book.getCategory());
         response.setPrice(book.getPrice());
