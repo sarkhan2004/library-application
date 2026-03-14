@@ -30,6 +30,12 @@ public class AuthorService {
         return authorMapper.toDto(author);
     }
 
+    public Author getAuthorByIdEntity(Long id) {
+       return authorRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Author with id " + id + " not found"));
+
+    }
+
     public List<AuthorResponseDto> getAllAuthors() {
         return authorRepository.findAll().stream()
                 .map(authorMapper::toDto)
