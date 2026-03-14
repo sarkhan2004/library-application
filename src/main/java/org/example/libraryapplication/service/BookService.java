@@ -1,5 +1,6 @@
 package org.example.libraryapplication.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.libraryapplication.dto.book.BookRequestDto;
 import org.example.libraryapplication.dto.book.BookResponseDto;
@@ -31,9 +32,12 @@ public class BookService {
         return bookMapper.toDto(savedBook);
     }
 
+    @Transactional
     public BookResponseDto findById(Long id) {
         Book foundedBook = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
+
+        foundedBook.setViews(foundedBook.getViews());
 
         return bookMapper.toDto(foundedBook);
     }
