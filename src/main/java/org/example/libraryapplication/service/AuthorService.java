@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.libraryapplication.dto.author.AuthorRequestDto;
 import org.example.libraryapplication.dto.author.AuthorResponseDto;
 import org.example.libraryapplication.entity.Author;
+import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.exceptions.AuthorNotFoundException;
 import org.example.libraryapplication.mapper.AuthorMapper;
 import org.example.libraryapplication.repository.AuthorRepository;
+import org.example.libraryapplication.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +19,11 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final BookRepository bookRepository;
 
     public AuthorResponseDto createAuthor(AuthorRequestDto request) {
         Author author = authorMapper.toEntity(request);
+
         Author savedAuthor = authorRepository.save(author);
         return authorMapper.toDto(savedAuthor);
     }
@@ -28,12 +32,6 @@ public class AuthorService {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException("Author with id " + id + " not found"));
         return authorMapper.toDto(author);
-    }
-
-    public Author getAuthorByIdEntity(Long id) {
-       return authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author with id " + id + " not found"));
-
     }
 
     public List<AuthorResponseDto> getAllAuthors() {

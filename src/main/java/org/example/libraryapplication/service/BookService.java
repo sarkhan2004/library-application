@@ -9,6 +9,7 @@ import org.example.libraryapplication.entity.Author;
 import org.example.libraryapplication.entity.Book;
 import org.example.libraryapplication.exceptions.BookNotFoundException;
 import org.example.libraryapplication.mapper.BookMapper;
+import org.example.libraryapplication.repository.AuthorRepository;
 import org.example.libraryapplication.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +23,18 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
     private final BookMapper bookMapper;
 
+    @Transactional
     public BookResponseDto createBook(BookRequestDto request) {
 
         Book book = bookMapper.toEntity(request);
-        Set<Long> authorIds = request.getAuthorIds();
-        Long id=authorIds.iterator().next();
-        Author author=authorService.getAuthorByIdEntity(id);
+
+        authorRepository.findAllById(request.getAuthorIds()).forEach(book::addAuthor);
 
         book.setCreatingDate(LocalDateTime.now());
-        book.setAuthors(Set.of(author));
-
 
         Book savedBook = bookRepository.save(book);
 
@@ -57,6 +57,7 @@ public class BookService {
                 .toList();
     }
 
+    @Transactional
     public BookResponseDto updateBook(Long id, BookRequestDto request) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
@@ -65,6 +66,9 @@ public class BookService {
         book.setCategory(request.getBookCategory());
         book.setDescription(request.getDescription());
         book.setPrice(request.getPrice());
+        for(Author author: authorRepository.findAllById(request.getAuthorIds())) {
+            book.getAuthors().add(author);
+        }
 
         Book updatedBook = bookRepository.save(book);
 

@@ -18,6 +18,4 @@ public class AuthorRequestDto {
 
     @Size(max = 2000, message = "Biography must not exceed 2000 characters")
     private String biography;
-
-    private Set<Long> bookIds;
 }

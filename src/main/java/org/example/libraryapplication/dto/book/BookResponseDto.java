@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 public class BookResponseDto {
+    private Long id;
     private String name;
     private BookCategory bookCategory;
     private String description;
