@@ -1,10 +1,14 @@
 package org.example.libraryapplication.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.libraryapplication.dto.comment.CommentRequestDto;
+import org.example.libraryapplication.dto.comment.CommentResponseDto;
 import org.example.libraryapplication.dto.user.UserRequestDto;
 import org.example.libraryapplication.dto.user.UserResponseDto;
+import org.example.libraryapplication.entity.Comment;
 import org.example.libraryapplication.entity.User;
 import org.example.libraryapplication.exceptions.UserNotFoundException;
+import org.example.libraryapplication.mapper.CommentMapper;
 import org.example.libraryapplication.mapper.UserMapper;
 import org.example.libraryapplication.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final CommentMapper commentMapper;
+    private final BookService bookService;
 
     public UserResponseDto createUser(UserRequestDto request) {
         User user = userMapper.toEntity(request);
@@ -66,5 +72,7 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+
 
 }

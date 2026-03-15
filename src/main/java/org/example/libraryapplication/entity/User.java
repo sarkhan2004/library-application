@@ -9,15 +9,17 @@ import org.example.libraryapplication.enums.Role;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 public class User {
+
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,17 +27,9 @@ public class User {
     private String surname;
     private String password;
     private LocalDate birthday;
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_books",
-            joinColumns =  @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    private Set<Book> books = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -47,6 +41,9 @@ public class User {
 
     @Column(unique = true)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 
 

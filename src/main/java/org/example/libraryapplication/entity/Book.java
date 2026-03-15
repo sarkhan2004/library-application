@@ -9,6 +9,7 @@ import org.example.libraryapplication.enums.BookCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +37,6 @@ public class Book {
     private BigDecimal price;
     private LocalDateTime creatingDate;
 
-    @ManyToMany(mappedBy = "books")
-    private  Set<User> users = new HashSet<>();
-
     @ManyToMany
     @JoinTable(
             name = "author_books",
@@ -47,8 +45,8 @@ public class Book {
     )
     private Set<Author> authors = new HashSet<>();
 
-    @OneToMany(mappedBy = "book")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 
     public void addAuthor(Author author) {

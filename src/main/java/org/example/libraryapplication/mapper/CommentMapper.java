@@ -30,6 +30,7 @@ public class CommentMapper {
         Comment comment = new Comment();
         comment.setText(request.getText());
         comment.setRating(request.getRating());
+
         return comment;
     }
 }
