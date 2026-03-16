@@ -65,6 +65,8 @@ public class BookService {
         book.setCategory(request.getBookCategory());
         book.setDescription(request.getDescription());
         book.setPrice(request.getPrice());
+
+        book.getAuthors().clear();
         for(Author author: authorRepository.findAllById(request.getAuthorIds())) {
             book.getAuthors().add(author);
         }
