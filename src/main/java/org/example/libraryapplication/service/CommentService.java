@@ -51,19 +51,19 @@ public class CommentService {
     }
 
     public List<CommentResponseDto> getAllComments() {
-        return commentRepository.findAll().stream()
+        return commentRepository.findAllWithUserAndBook().stream()
                 .map(commentMapper::toDto)
                 .toList();
     }
 
     public List<CommentResponseDto> getCommentsByBookId(Long bookId) {
-        return commentRepository.findByBookId(bookId).stream()
+        return commentRepository.findByBookIdWithUser(bookId).stream()
                 .map(commentMapper::toDto)
                 .toList();
     }
 
     public List<CommentResponseDto> getCommentsByUserId(Long userId) {
-        return commentRepository.findByUserId(userId).stream()
+        return commentRepository.findByUserIdWithBook(userId).stream()
                 .map(commentMapper::toDto)
                 .toList();
     }

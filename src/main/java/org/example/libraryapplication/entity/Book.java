@@ -45,7 +45,7 @@ public class Book {
     )
     private Set<Author> authors = new HashSet<>();
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
 
